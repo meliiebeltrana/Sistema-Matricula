@@ -1,0 +1,102 @@
+@model ProyectoFinal.Models.Docente
+
+@{
+    ViewData["Title"] = "Detalles del docente";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-dark">
+                <h2 class="mb-0">Detalles del docente</h2>
+            </div>
+
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Identificacion)
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Identificacion)
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.NombreCompleto)
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.NombreCompleto)
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Correo)
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        <a href="mailto:@Model.Correo">
+                            @Model.Correo
+                        </a>
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Especialidad)
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Especialidad)
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Telefono)
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        @if (string.IsNullOrWhiteSpace(Model.Telefono))
+                        {
+                            <span class="text-muted">
+                                No registrado
+                            </span>
+                        }
+                        else
+                        {
+                            @Model.Telefono
+                        }
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        Estado
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        @if (Model.Activo)
+                        {
+                            <span class="badge bg-success">
+                                Activo
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">
+                                Inactivo
+                            </span>
+                        }
+                    </dd>
+                </dl>
+
+                <div class="d-flex gap-2 mt-4">
+                    <a asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="btn btn-warning">
+                        Editar
+                    </a>
+
+                    <a asp-action="Index"
+                       class="btn btn-secondary">
+                        Regresar a la lista
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

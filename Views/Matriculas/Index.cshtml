@@ -1,0 +1,178 @@
+@model IEnumerable<ProyectoFinal.Models.Matricula>
+
+@{
+    ViewData["Title"] = "Matrículas";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1>Matrículas</h1>
+
+        <p class="text-muted">
+            Consulte y administre las matrículas registradas en el sistema.
+        </p>
+    </div>
+
+    <a asp-action="Create" class="btn btn-primary">
+        Registrar matrícula
+    </a>
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show"
+         role="alert">
+
+        @TempData["Mensaje"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Cerrar">
+        </button>
+    </div>
+}
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">
+        No hay matrículas registradas en el sistema.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>Estudiante</th>
+                    <th>Curso</th>
+                    <th>Carrera</th>
+                    <th>Fecha</th>
+                    <th>Período académico</th>
+                    <th>Estado</th>
+                    <th>Nota final</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var matricula in Model)
+                {
+                    <tr>
+                        <td>
+                            @if (matricula.Estudiante != null)
+                            {
+                                @matricula.Estudiante.NombreCompleto
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    Estudiante no disponible
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @if (matricula.Curso != null)
+                            {
+                                <span>
+                                    @matricula.Curso.Codigo -
+                                    @matricula.Curso.Nombre
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    Curso no disponible
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @if (matricula.Curso?.Carrera != null)
+                            {
+                                @matricula.Curso.Carrera.Nombre
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    Sin carrera
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @matricula.FechaMatricula.ToString("dd/MM/yyyy")
+                        </td>
+
+                        <td>
+                            @matricula.PeriodoAcademico
+                        </td>
+
+                        <td>
+                            @if (matricula.Estado == "Activa")
+                            {
+                                <span class="badge bg-success">
+                                    Activa
+                                </span>
+                            }
+                            else if (matricula.Estado == "Finalizada")
+                            {
+                                <span class="badge bg-primary">
+                                    Finalizada
+                                </span>
+                            }
+                            else if (matricula.Estado == "Cancelada")
+                            {
+                                <span class="badge bg-danger">
+                                    Cancelada
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">
+                                    @matricula.Estado
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @if (matricula.NotaFinal.HasValue)
+                            {
+                                @matricula.NotaFinal.Value.ToString("0.##")
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    Pendiente
+                                </span>
+                            }
+                        </td>
+
+                        <td class="text-center">
+                            <a asp-action="Details"
+                               asp-route-id="@matricula.Id"
+                               class="btn btn-info btn-sm">
+                                Ver
+                            </a>
+
+                            <a asp-action="Edit"
+                               asp-route-id="@matricula.Id"
+                               class="btn btn-warning btn-sm">
+                                Editar
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@matricula.Id"
+                               class="btn btn-danger btn-sm">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

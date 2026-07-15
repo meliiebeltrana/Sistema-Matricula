@@ -1,0 +1,92 @@
+@model ProyectoFinal.Models.Carrera
+
+@{
+    ViewData["Title"] = "Eliminar carrera";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm border-danger">
+            <div class="card-header bg-danger text-white">
+                <h2 class="mb-0">Eliminar carrera</h2>
+            </div>
+
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    ¿Está seguro de que desea eliminar esta carrera?
+                    Esta acción no se puede deshacer.
+                </div>
+
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Codigo)
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Codigo)
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Nombre)
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        @Html.DisplayFor(model => model.Nombre)
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        @Html.DisplayNameFor(model => model.Descripcion)
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        @if (string.IsNullOrWhiteSpace(Model.Descripcion))
+                        {
+                            <span class="text-muted">
+                                Sin descripción
+                            </span>
+                        }
+                        else
+                        {
+                            @Model.Descripcion
+                        }
+                    </dd>
+
+                    <dt class="col-sm-4">
+                        Estado
+                    </dt>
+
+                    <dd class="col-sm-8">
+                        @if (Model.Activa)
+                        {
+                            <span class="badge bg-success">
+                                Activa
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">
+                                Inactiva
+                            </span>
+                        }
+                    </dd>
+                </dl>
+
+                <form asp-action="Delete" method="post">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="d-flex gap-2 mt-4">
+                        <button type="submit"
+                                class="btn btn-danger">
+                            Confirmar eliminación
+                        </button>
+
+                        <a asp-action="Index"
+                           class="btn btn-secondary">
+                            Cancelar
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

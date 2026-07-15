@@ -1,0 +1,128 @@
+@model IEnumerable<ProyectoFinal.Models.Carrera>
+
+@{
+    ViewData["Title"] = "Carreras";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1>Carreras universitarias</h1>
+
+        <p class="text-muted">
+            Consulte las carreras disponibles en el sistema.
+        </p>
+    </div>
+
+    @if (User.IsInRole("Administrador"))
+    {
+        <a asp-action="Create"
+           class="btn btn-primary">
+            Agregar carrera
+        </a>
+    }
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show"
+         role="alert">
+
+        @TempData["Mensaje"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Cerrar">
+        </button>
+    </div>
+}
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">
+        No hay carreras registradas en el sistema.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>Código</th>
+                    <th>Nombre de la carrera</th>
+                    <th>Descripción</th>
+                    <th>Estado</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var carrera in Model)
+                {
+                    <tr>
+                        <td>
+                            @carrera.Codigo
+                        </td>
+
+                        <td>
+                            @carrera.Nombre
+                        </td>
+
+                        <td>
+                            @if (string.IsNullOrWhiteSpace(carrera.Descripcion))
+                            {
+                                <span class="text-muted">
+                                    Sin descripción
+                                </span>
+                            }
+                            else
+                            {
+                                @carrera.Descripcion
+                            }
+                        </td>
+
+                        <td>
+                            @if (carrera.Activa)
+                            {
+                                <span class="badge bg-success">
+                                    Activa
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">
+                                    Inactiva
+                                </span>
+                            }
+                        </td>
+
+                        <td class="text-center">
+                            <a asp-action="Details"
+                               asp-route-id="@carrera.Id"
+                               class="btn btn-info btn-sm">
+                                Ver
+                            </a>
+
+                            @if (User.IsInRole("Administrador"))
+                            {
+                                <a asp-action="Edit"
+                                   asp-route-id="@carrera.Id"
+                                   class="btn btn-warning btn-sm">
+                                    Editar
+                                </a>
+
+                                <a asp-action="Delete"
+                                   asp-route-id="@carrera.Id"
+                                   class="btn btn-danger btn-sm">
+                                    Eliminar
+                                </a>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

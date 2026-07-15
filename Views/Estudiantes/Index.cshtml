@@ -1,0 +1,129 @@
+@model IEnumerable<ProyectoFinal.Models.Estudiante>
+
+@{
+    ViewData["Title"] = "Estudiantes";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1>Estudiantes</h1>
+
+        <p class="text-muted">
+            Consulte y administre los estudiantes registrados en el sistema.
+        </p>
+    </div>
+
+    <a asp-action="Create" class="btn btn-primary">
+        Agregar estudiante
+    </a>
+</div>
+
+@if (TempData["Mensaje"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show"
+         role="alert">
+
+        @TempData["Mensaje"]
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Cerrar">
+        </button>
+    </div>
+}
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">
+        No hay estudiantes registrados en el sistema.
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-hover align-middle">
+
+            <thead class="table-dark">
+                <tr>
+                    <th>Identificación</th>
+                    <th>Nombre completo</th>
+                    <th>Correo electrónico</th>
+                    <th>Carrera</th>
+                    <th>Fecha de nacimiento</th>
+                    <th>Estado</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var estudiante in Model)
+                {
+                    <tr>
+                        <td>@estudiante.Identificacion</td>
+
+                        <td>@estudiante.NombreCompleto</td>
+
+                        <td>
+                            <a href="mailto:@estudiante.Correo">
+                                @estudiante.Correo
+                            </a>
+                        </td>
+
+                        <td>
+                            @if (estudiante.Carrera != null)
+                            {
+                                @estudiante.Carrera.Nombre
+                            }
+                            else
+                            {
+                                <span class="text-muted">
+                                    Sin carrera asignada
+                                </span>
+                            }
+                        </td>
+
+                        <td>
+                            @estudiante.FechaNacimiento.ToString("dd/MM/yyyy")
+                        </td>
+
+                        <td>
+                            @if (estudiante.Activo)
+                            {
+                                <span class="badge bg-success">
+                                    Activo
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-secondary">
+                                    Inactivo
+                                </span>
+                            }
+                        </td>
+
+                        <td class="text-center">
+                            <a asp-action="Details"
+                               asp-route-id="@estudiante.Id"
+                               class="btn btn-info btn-sm">
+                                Ver
+                            </a>
+
+                            <a asp-action="Edit"
+                               asp-route-id="@estudiante.Id"
+                               class="btn btn-warning btn-sm">
+                                Editar
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@estudiante.Id"
+                               class="btn btn-danger btn-sm">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
